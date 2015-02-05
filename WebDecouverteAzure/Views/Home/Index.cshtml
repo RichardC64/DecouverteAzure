@@ -26,7 +26,12 @@
 
 <script>
     $(document).ready(function () {
-        $('#datepicker').datepicker(
+        var largeImage = $("#largeImage");
+        var loading = $("#loading");
+        var mainTable = $("#mainTable");
+        var datePicker = $('#datepicker');
+
+        datePicker.datepicker(
         {
             language: 'fr',
             autoclose: true,
@@ -35,24 +40,25 @@
             todayHighlight: true
         });
 
-        $('#datepicker').datepicker('setDate', new Date())
+        datePicker.datepicker('setDate', new Date())
             .on('changeDate', function (e) {
                 callService(e.date);
             });
 
         var callService = function (newDate) {
-            $("#largeImage").attr("src", "");
-            $("#loading").show();
-            $("#mainTable").html('');
+            largeImage.attr("src", "");
+            loading.show();
+            mainTable.html('');
+            var d = new Date(newDate.getTime() - newDate.getTimezoneOffset() * 60 * 1000);
             $.ajax({
                 url: "@Html.Raw(Url.Action("GetImages", "Images"))",
                 cache: false,
-                data: { date: newDate.toJSON() },
+                data: { date: d.toJSON() },
                 type: 'GET',
                 contentType: 'application/json',
                 charset: 'utf-8',
                 success: function (data, textStatus, jqXHR) {
-                    $("#loading").hide();
+                    loading.hide();
                     if (data == null || data.length == 0)
                         return;
                     var result = "";
@@ -61,8 +67,8 @@
                         result += '<img class="img-responsive img-thumbnail thumb" name="thumb" src="/Datas/' + data[index].Name + '" />';
                         result += '</div>';
                     }
-                    $("#mainTable").html(result);
-                    $("#largeImage").attr('src', '/Datas/' + data[0].Name);
+                    mainTable.html(result);
+                    largeImage.attr('src', '/Datas/' + data[0].Name);
                     
                     //setTimeout(function () {
                     //    var date = $("#datepicker").datepicker("getDate");
@@ -72,23 +78,23 @@
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     $("#infos").html(errorThrown);
-                    $("#loading").hide();
+                    loading.hide();
                 },
             });
         };
 
         $(document.body).on('click', 'img[name="thumb"]', function () {
-            $("#largeImage").attr("src", this.src);
+            largeImage.attr("src", this.src);
         });
 
         $("#refresh").click(function () {
-            var date = $("#datepicker").datepicker("getDate");
+            var date = datePicker.datepicker("getDate");
             console.log(date);
             callService(date);
         });
 
         $("#delete").click(function () {
-            var src = $("#largeImage").attr("src");
+            var src = largeImage.attr("src");
             if (!src) return;
 
             var fileName = src.substring("/Datas/".length, src.length);
@@ -114,6 +120,6 @@
 
         callService(new Date());
 
-        $("#loading").hide();
+        loading.hide();
     });
 </script>
