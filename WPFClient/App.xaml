@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+         <BitmapImage UriSource="Assets/start.png" x:Key="StartImage"/>
+        <BitmapImage UriSource="Assets/stop.png" x:Key="StopImage"/>
     </Application.Resources>
 </Application>

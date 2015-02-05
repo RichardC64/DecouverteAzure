@@ -10,6 +10,9 @@ namespace WebDecouverteAzure.Controllers
 {
     public class ImagesController : Controller
     {
+        /// <summary>
+        /// Retourne la liste des images de la date situés dans le dossier /Datas triés par date
+        /// </summary>
         [HttpGet]
         public JsonResult GetImages(DateTime date)
         {
@@ -25,7 +28,10 @@ namespace WebDecouverteAzure.Controllers
                 .OrderByDescending(f => f.Name),
                 JsonRequestBehavior.AllowGet);
         }
-
+        /// <summary>
+        /// Méthode appelées par les clients pour enregistrer une image capturée par la webcam
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult UploadImage()
         {
@@ -39,7 +45,6 @@ namespace WebDecouverteAzure.Controllers
                 Duration = int.Parse(ConfigurationManager.AppSettings["Duration"]),
             });
         }
-
         [HttpPost]
         public JsonResult DeleteImage(string fileName)
         {
@@ -50,6 +55,9 @@ namespace WebDecouverteAzure.Controllers
 
             return Json("");
         }
+        /// <summary>
+        /// Enregistre le bitmap dans le dossier /Datas
+        /// </summary>
         private void SaveBitmap(byte[] datas)
         {
             var date = DateTime.UtcNow;
