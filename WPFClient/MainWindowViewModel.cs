@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -258,51 +257,48 @@ namespace WPFClient
             //          enregistre la fréquence de l'upload retournée par le serveur Azure
             //          enregistre l'url du site Azure (pour éviter de le ressaisir à chaque fois)
 
-            Stream responseStream = null;
             WebResponse response = null;
             try
             {
                 response = await Task.Factory.FromAsync<WebResponse>(
                     request.BeginGetResponse,
                     request.EndGetResponse, null);
-                responseStream = response.GetResponseStream();
+                Stream responseStream = response.GetResponseStream();
                 if (responseStream == null)
                 {
                     Stop("Impossible de récupérer la réponse du serveur Azure");
                     return;
                 }
+                using (var reader = new StreamReader(responseStream))
+                {
+                    var serialiser = new JsonSerializer();
+                    var configuration = (AppConfiguration) serialiser.Deserialize(reader, typeof (AppConfiguration));
+
+                    if (Properties.Settings.Default.Duration != configuration.Duration)
+                    {
+                        Information = string.Format("Changement de la fréquence de téléchargement : {0}s",
+                            configuration.Duration);
+                        Properties.Settings.Default.Duration = configuration.Duration;
+
+                        _timer.Interval = new TimeSpan(0, 0, 0, Properties.Settings.Default.Duration);
+                    }
+                    Properties.Settings.Default.AzureSiteUrl = siteUri.ToString();
+                    Properties.Settings.Default.Save();
+
+                    _timer.Start();
+                }
+                Information = "";
+                _bitmapToUpload = false;
             }
             catch (WebException ex)
             {
                 Stop(ex.Message);
-                return;
             }
             finally
             {
                 if (response != null)
                     response.Dispose();
             }
-
-            using (var reader = new StreamReader(responseStream))
-            {
-                var serialiser = new JsonSerializer();
-                var configuration = (AppConfiguration) serialiser.Deserialize(reader, typeof (AppConfiguration));
-
-                if (Properties.Settings.Default.Duration != configuration.Duration)
-                {
-                    Information = string.Format("Changement de la fréquence de téléchargement : {0}s",
-                        configuration.Duration);
-                    Properties.Settings.Default.Duration = configuration.Duration;
-
-                    _timer.Interval = new TimeSpan(0, 0, 0, Properties.Settings.Default.Duration);
-                }
-                Properties.Settings.Default.AzureSiteUrl = siteUri.ToString();
-                Properties.Settings.Default.Save();
-
-                _timer.Start();
-            }
-            Information = "";
-            _bitmapToUpload = false;
         }
 
         private byte[] GetBitmapDatas()

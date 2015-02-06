@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -42,7 +41,7 @@ namespace WebDecouverteAzure.Controllers
             SaveBitmap(datas);
             return Json(new
             {
-                Duration = int.Parse(ConfigurationManager.AppSettings["Duration"]),
+                Properties.Settings.Default.Duration,
             });
         }
         [HttpPost]
