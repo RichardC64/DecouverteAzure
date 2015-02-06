@@ -4,11 +4,19 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using WebDecouverteAzure.Services;
 
 namespace WebDecouverteAzure.Controllers
 {
     public class ImagesController : Controller
     {
+        private readonly ParametrageService _parametrageService;
+
+        public ImagesController()
+        {
+            _parametrageService = new ParametrageService();
+        }
+
         /// <summary>
         /// Retourne la liste des images de la date situés dans le dossier /Datas triés par date
         /// </summary>
@@ -41,7 +49,7 @@ namespace WebDecouverteAzure.Controllers
             SaveBitmap(datas);
             return Json(new
             {
-                Properties.Settings.Default.Duration,
+                Duration = _parametrageService.LoadDuration()
             });
         }
         [HttpPost]
