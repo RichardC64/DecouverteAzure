@@ -20,16 +20,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFClient", "WPFClient\WPFC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Articles", "Articles", "{F92B2832-38B9-4158-BAF4-A5ABE034383E}"
 	ProjectSection(SolutionItems) = preProject
-		..\WebDecouverteAzureAdmin\WebDecouverteAzureAdmin\article\It.html = ..\WebDecouverteAzureAdmin\WebDecouverteAzureAdmin\article\It.html
+		articles\DecouverteAzure-IT.html = articles\DecouverteAzure-IT.html
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Medias", "Medias", "{8031C3D3-A25F-4518-9C6F-AA17A99AF10A}"
 	ProjectSection(SolutionItems) = preProject
-		..\WebDecouverteAzureAdmin\WebDecouverteAzureAdmin\article\creationpackage.JPG = ..\WebDecouverteAzureAdmin\WebDecouverteAzureAdmin\article\creationpackage.JPG
-		..\WebDecouverteAzureAdmin\WebDecouverteAzureAdmin\article\creationpackagestructure.JPG = ..\WebDecouverteAzureAdmin\WebDecouverteAzureAdmin\article\creationpackagestructure.JPG
-		..\WebDecouverteAzureAdmin\WebDecouverteAzureAdmin\article\ITidentification.JPG = ..\WebDecouverteAzureAdmin\WebDecouverteAzureAdmin\article\ITidentification.JPG
-		..\WebDecouverteAzureAdmin\WebDecouverteAzureAdmin\article\ITPublishing.JPG = ..\WebDecouverteAzureAdmin\WebDecouverteAzureAdmin\article\ITPublishing.JPG
-		..\WebDecouverteAzureAdmin\WebDecouverteAzureAdmin\article\sitepublie.JPG = ..\WebDecouverteAzureAdmin\WebDecouverteAzureAdmin\article\sitepublie.JPG
+		articles\medias\creationpackage.JPG = articles\medias\creationpackage.JPG
+		articles\medias\creationpackagestructure.JPG = articles\medias\creationpackagestructure.JPG
+		articles\medias\ITidentification.JPG = articles\medias\ITidentification.JPG
+		articles\medias\ITPublishing.JPG = articles\medias\ITPublishing.JPG
+		articles\medias\sitepublie.JPG = articles\medias\sitepublie.JPG
 	EndProjectSection
 EndProject
 Global
