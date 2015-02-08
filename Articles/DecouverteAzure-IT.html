@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Your ASP.NET application</title>
+
+    <style type="text/css">
+        .auto-style1 {
+            color: #FF3300;
+        }
+    </style>
+
+</head>
+<body>
+
+
+    <p>
+        Le but de ce tutoriel est de vous montrer comment déployer facilement un site web Azure avec Microsoft Azure PowerShell.</p>
+    <p>
+        La première étape consiste à créer votre compte Azure.</p>
+    <h2>
+        Création du compte Azure</h2>
+    <p class="auto-style1">
+        <strong>(copier-coller de l&#39;article précédent)</strong></p>
+    <p>
+        Maintenant que votre compte Azure est crée, il faut déployer votre site web. On peut faire cela de nombreuses façons : avec l&#39;outil de publication intégré de Visual Studio, via FTP, en ligne de commande, avec MSBuild, msdeploy.exe, etc.</p>
+    <p>
+        Dans ce tutoriel, on va le faire &quot;à la main&quot;, avec Microsoft Azure Powershell.</p>
+    <h2>
+        Package de déploiement</h2>
+    <p>
+        La première étape va consister à créer un package de déploiement. Ouvrez la solution dans Visual Studio puis sur le projet web dans le menu contextuel cliquez sur Publish.</p>
+    <p>
+        Créez alors un nouveau profil et sélectionnez la méthode de publication &quot;Web Deploy Package&quot; :</p>
+    <p>
+        <img alt=""  src="Medias/creationpackage.JPG" width="600px" /></p>
+    <p>
+        Le &quot;package location&quot; est le répertoire ou le package sera généré et le &quot;site name&quot; le nom de votre site (étonnant non ?). Pour le &quot;package location&quot;, créez un répertoire &quot;Package&quot; dans le répertoire &quot;PublishScripts&quot; de façon à ce que l&#39;on ai la structure suivante :</p>
+    <p>
+        <img alt="" src="Medias/creationpackagestructure.JPG" /></p>
+    <p>
+        Cliquez sur Publish et vous verrez alors dans le répertoire cible votre package, le fichier WeDecouverteAzure.zip.</p>
+    <p>
+        Vous pouvez imaginer un scénario ou cette génération est automatisée pendant la build. Vous n&#39;avez plus alors qu&#39;à récupérer ce zip.</p>
+    <h2>
+        Microsoft
+        Azure Powershell</h2>
+    <p>
+        Si vous n&#39;avez pas Microsoft Azure PowerShell d&#39;installé, vous pouvez le télécharger et l&#39;installer en exécutant <a href="http://go.microsoft.com/fwlink/p/?linkid=320376&amp;clcid=0x40c">Microsoft Web Plateform Installer</a>. </p>
+    <p>
+        Exécutez maintenant Microsoft Azure PowerShell en mode administrateur. La première étape va consister à enregistrer votre profil Azure en mode remote :</p>
+    <pre>set-executionPolicy RemoteSigned</pre>
+    <p>
+        Puis ajoutez votre compte Azure avec la commande :</p>
+    <pre>Add-AzureAccount</pre>
+    <p>
+        Une fenêtre d&#39;identification apparait : connectez-vous alors avec votre compte Microsoft.</p>
+    <p>
+        <img alt="" src="Medias/ITidentification.JPG" width="600px" /></p>
+    <p>
+        Félicitations : vous êtes maintenant connecté à votre compte Azure. </p>
+    <p>
+        NB : pour en savoir plus sur la connection à votre compte, lisez l&#39;article <a href="http://azure.microsoft.com/fr-fr/documentation/articles/install-configure-powershell/">Installation et configuration d&#39;Azure PowerShell</a>.</p>
+    <p>
+        Si vous voulez savoir exactement ce qu&#39;à enregistré cette commande PowerShell, rendez-vous dans le dossier (le contenu des fichiers json présents est très instructif) :</p>
+    <pre>c:\Users\&lt;VotreNomdUtilisateur&gt;\AppData\Roaming\Windows Azure Powershell</pre>
+    <p>
+        Une autre façon de voir le contenu de ce dossier, c&#39;est d&#39;exécuter le cmdlet :</p>
+    <pre>Get-AzureSubscription</pre>
+    <p>
+        Vous avez presque fini mais avant de déployer le package, il faut le configurer correctement. Ouvrez pour cela le fichier json de configuration WebDecouverteAzure-WAWS-dev.json. Modifiez son contenu pour que les <em>name</em> et <em>location</em> du <em>webSite</em> et correspondent avec votre site Azure :</p>
+    <pre>&quot;environmentSettings&quot;: { &quot;webSite&quot;: { &quot;name&quot;: &quot;c2i&quot;, &quot;location&quot;: &quot;West Europe&quot; } }</pre>
+    <p>
+        Il ne suffit plus maintenant pour déployer votre package que d&#39;exécuter le cmdlet Publish-WebApplicationWebsite.ps1avec les bons arguments :</p>
+    <pre>Publish-WebApplicationWebsite.ps1 
+	-verbose
+	-Configuration Configurations\WebDecouverteAzure-WAWS-dev.json
+	-WebDeployPackage Package\WebDecouverteAzure.zip</pre>
+    <p>
+        Il n&#39;y a rien de bien sorcier si vous avez respecté l&#39;organisation des répertoires. Vous pouvez maintenant l&#39;exécuter :</p>
+    <p>
+        <img alt=""  src="Medias/ITPublishing.JPG" width="600px" /></p>
+    <p>
+        Félicitations : votre site est maintenant en ligne !</p>
+    <p>
+        <img alt="" src="Medias/sitepublie.JPG" width="600px" /></p>
+    <p>
+        &nbsp;</p>
+    <p>
+        &nbsp;</p>
+
+
+</body>
+</html>
